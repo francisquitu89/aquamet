@@ -1,0 +1,1804 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centro de Control de Producción Aquamet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="logo">
+            <img src="https://static.wixstatic.com/media/c9a2af_09c38bb721954651802b37af2746c2a9~mv2.png/v1/fill/w_482,h_158,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo%20aquamet%20blanco_sin%20fondo_horizontal_COLOR.png" alt="Aquamet Logo" class="logo-image">
+          </div>
+          <div class="header-title">
+            <h1>Centro de Control de Producción</h1>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="date-time" id="dateTime"></div>
+          <div class="notifications">
+            <button class="notification-btn" id="notificationBtn">
+              <i class="bi bi-bell"></i>
+              <span class="notification-count">3</span>
+            </button>
+          </div>
+          <div class="user-profile">
+            <div class="user-info">
+              <span class="user-name">Daniel Droguet</span>
+              <span class="user-role">Jefe de Producción</span>
+            </div>
+            <div class="user-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="app-main">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+          <div class="sidebar-header">
+            <h3>Menú Principal</h3>
+          </div>
+          
+          <div class="nav-section">
+            <div class="nav-item active" data-section="dashboard">
+              <i class="bi bi-speedometer2"></i>
+              <span class="nav-text">Dashboard</span>
+            </div>
+            
+            <div class="nav-item" data-section="projects">
+              <i class="bi bi-kanban"></i>
+              <span class="nav-text">Proyectos</span>
+            </div>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">
+              <i class="bi bi-buildings"></i>
+              <span>Áreas de Producción</span>
+            </div>
+            
+            <div class="nav-item" data-section="engineering">
+              <i class="bi bi-gear-wide-connected"></i>
+              <span class="nav-text">Área de Ingeniería</span>
+            </div>
+            
+            <div class="nav-item" data-section="civil-works">
+              <i class="bi bi-hammer"></i>
+              <span class="nav-text">Área de Obras Civiles</span>
+            </div>
+            
+            <div class="nav-item" data-section="naval">
+              <i class="bi bi-water"></i>
+              <span class="nav-text">Área Naval</span>
+            </div>
+            
+            <div class="nav-item" data-section="electrical">
+              <i class="bi bi-lightning-charge"></i>
+              <span class="nav-text">Área Eléctrica</span>
+            </div>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-item" data-section="documents">
+              <i class="bi bi-folder2-open"></i>
+              <span class="nav-text">Repositorio de Documentos</span>
+            </div>
+          </div>
+
+          <div class="sidebar-footer">
+            <div class="nav-item" data-section="settings">
+              <i class="bi bi-gear"></i>
+              <span class="nav-text">Configuración</span>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="main-content">
+          <!-- Dashboard Section -->
+          <section id="dashboard" class="content-section active">
+            <div class="section-header">
+              <div class="header-left">
+                <h2>Dashboard Principal</h2>
+                <div class="last-update">
+                  <i class="bi bi-clock"></i>
+                  <span>Última actualización: <span id="lastUpdate">--:--</span></span>
+                </div>
+              </div>
+              <div class="header-right">
+                <div class="breadcrumb">
+                  <span class="breadcrumb-item active">Dashboard</span>
+                </div>
+                <button class="refresh-btn" id="refreshDashboard">
+                  <i class="bi bi-arrow-clockwise"></i>
+                  Actualizar
+                </button>
+              </div>
+            </div>
+            
+            <div class="dashboard-grid">
+              <!-- Widget 1 - Resumen de Proyectos -->
+              <div class="dashboard-widget project-summary">
+                <div class="widget-header">
+                  <h3>Resumen de Proyectos</h3>
+                  <div class="widget-actions">
+                    <button class="widget-btn" title="Ver detalles">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="widget-btn" title="Configurar">
+                      <i class="bi bi-gear"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="widget-content">
+                  <div class="project-chart-container">
+                    <div class="chart-placeholder" id="projectChart">
+                      <div class="donut-chart">
+                        <div class="chart-center">
+                          <span class="total-projects">24</span>
+                          <span class="chart-label">Proyectos</span>
+                        </div>
+                        <svg viewBox="0 0 120 120" class="donut-svg">
+                          <circle cx="60" cy="60" r="40" class="chart-bg"></circle>
+                          <circle cx="60" cy="60" r="40" class="chart-segment on-time" 
+                                  stroke-dasharray="125.66 251.32" 
+                                  stroke-dashoffset="0"></circle>
+                          <circle cx="60" cy="60" r="40" class="chart-segment at-risk" 
+                                  stroke-dasharray="62.83 251.32" 
+                                  stroke-dashoffset="-125.66"></circle>
+                          <circle cx="60" cy="60" r="40" class="chart-segment delayed" 
+                                  stroke-dasharray="31.42 251.32" 
+                                  stroke-dashoffset="-188.49"></circle>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="project-legend">
+                      <div class="legend-item">
+                        <div class="legend-color on-time"></div>
+                        <span class="legend-label">A tiempo</span>
+                        <span class="legend-value">15</span>
+                      </div>
+                      <div class="legend-item">
+                        <div class="legend-color at-risk"></div>
+                        <span class="legend-label">En riesgo</span>
+                        <span class="legend-value">6</span>
+                      </div>
+                      <div class="legend-item">
+                        <div class="legend-color delayed"></div>
+                        <span class="legend-label">Atrasados</span>
+                        <span class="legend-value">3</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Widget 2 - Hitos de la Semana -->
+              <div class="dashboard-widget milestones">
+                <div class="widget-header">
+                  <h3>Hitos de la Semana</h3>
+                  <div class="week-navigation">
+                    <button class="week-btn" id="prevWeek">
+                      <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <span class="current-week">30 Jul - 5 Ago</span>
+                    <button class="week-btn" id="nextWeek">
+                      <i class="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="widget-content">
+                  <div class="milestones-timeline">
+                    <div class="milestone-item urgent">
+                      <div class="milestone-date">
+                        <span class="day">31</span>
+                        <span class="month">Jul</span>
+                      </div>
+                      <div class="milestone-content">
+                        <h4>Entrega Proyecto Naval-2024-03</h4>
+                        <p>Finalización del casco principal</p>
+                        <div class="milestone-meta">
+                          <span class="department naval">Naval</span>
+                          <span class="priority high">Alta</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                      <div class="milestone-date">
+                        <span class="day">1</span>
+                        <span class="month">Ago</span>
+                      </div>
+                      <div class="milestone-content">
+                        <h4>Revisión Técnica Estructural</h4>
+                        <p>Inspección de soldaduras Sector A</p>
+                        <div class="milestone-meta">
+                          <span class="department engineering">Ingeniería</span>
+                          <span class="priority medium">Media</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                      <div class="milestone-date">
+                        <span class="day">2</span>
+                        <span class="month">Ago</span>
+                      </div>
+                      <div class="milestone-content">
+                        <h4>Instalación Sistema Eléctrico</h4>
+                        <p>Montaje panel control principal</p>
+                        <div class="milestone-meta">
+                          <span class="department electrical">Eléctrico</span>
+                          <span class="priority high">Alta</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                      <div class="milestone-date">
+                        <span class="day">4</span>
+                        <span class="month">Ago</span>
+                      </div>
+                      <div class="milestone-content">
+                        <h4>Finalización Cimentaciones</h4>
+                        <p>Completar Sector B - Dique 2</p>
+                        <div class="milestone-meta">
+                          <span class="department civil">Obras Civiles</span>
+                          <span class="priority medium">Media</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="milestone-item">
+                      <div class="milestone-date">
+                        <span class="day">5</span>
+                        <span class="month">Ago</span>
+                      </div>
+                      <div class="milestone-content">
+                        <h4>Reunión Semanal de Coordinación</h4>
+                        <p>Revisión general de avances</p>
+                        <div class="milestone-meta">
+                          <span class="department general">General</span>
+                          <span class="priority medium">Media</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Widget 3 - Alertas Críticas -->
+              <div class="dashboard-widget critical-alerts">
+                <div class="widget-header">
+                  <h3>Alertas Críticas</h3>
+                  <div class="alert-count-badge">
+                    <span id="criticalAlertsCount">3</span>
+                  </div>
+                </div>
+                <div class="widget-content">
+                  <div class="alerts-container">
+                    <div class="alert-item critical">
+                      <div class="alert-icon">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                      </div>
+                      <div class="alert-content">
+                        <h4>Retraso Crítico - Sector B</h4>
+                        <p>Cimentaciones con 3 días de retraso. Impacta cronograma general.</p>
+                        <div class="alert-actions">
+                          <button class="alert-btn primary">Ver Detalles</button>
+                          <button class="alert-btn secondary">Resolver</button>
+                        </div>
+                      </div>
+                      <div class="alert-time">
+                        <span>Hace 2h</span>
+                      </div>
+                    </div>
+                    
+                    <div class="alert-item warning">
+                      <div class="alert-icon">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                      </div>
+                      <div class="alert-content">
+                        <h4>Falta de Material - Área Naval</h4>
+                        <p>Stock bajo de acero estructural. Se requiere pedido urgente.</p>
+                        <div class="alert-actions">
+                          <button class="alert-btn primary">Gestionar</button>
+                          <button class="alert-btn secondary">Posponer</button>
+                        </div>
+                      </div>
+                      <div class="alert-time">
+                        <span>Hace 4h</span>
+                      </div>
+                    </div>
+                    
+                    <div class="alert-item info">
+                      <div class="alert-icon">
+                        <i class="bi bi-info-circle-fill"></i>
+                      </div>
+                      <div class="alert-content">
+                        <h4>Mantenimiento Programado</h4>
+                        <p>Equipos eléctricos en mantenimiento preventivo hasta las 18:00.</p>
+                        <div class="alert-actions">
+                          <button class="alert-btn secondary">Marcar Leído</button>
+                        </div>
+                      </div>
+                      <div class="alert-time">
+                        <span>Hace 1h</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="alerts-footer">
+                    <button class="view-all-alerts">
+                      Ver Todas las Alertas
+                      <i class="bi bi-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Widget 4 - Carga de Trabajo por Área -->
+              <div class="dashboard-widget workload-chart">
+                <div class="widget-header">
+                  <h3>Carga de Trabajo por Área</h3>
+                  <div class="chart-controls">
+                    <select class="chart-period">
+                      <option value="week">Esta Semana</option>
+                      <option value="month">Este Mes</option>
+                      <option value="quarter">Trimestre</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="widget-content">
+                  <div class="workload-bars">
+                    <div class="workload-item">
+                      <div class="workload-label">
+                        <i class="bi bi-gear-wide-connected"></i>
+                        <span>Ingeniería</span>
+                      </div>
+                      <div class="workload-bar-container">
+                        <div class="workload-bar">
+                          <div class="bar-fill engineering" style="width: 85%"></div>
+                        </div>
+                        <span class="workload-value">23/27</span>
+                      </div>
+                    </div>
+                    
+                    <div class="workload-item">
+                      <div class="workload-label">
+                        <i class="bi bi-hammer"></i>
+                        <span>Obras Civiles</span>
+                      </div>
+                      <div class="workload-bar-container">
+                        <div class="workload-bar">
+                          <div class="bar-fill civil" style="width: 95%"></div>
+                        </div>
+                        <span class="workload-value">19/20</span>
+                      </div>
+                    </div>
+                    
+                    <div class="workload-item">
+                      <div class="workload-label">
+                        <i class="bi bi-water"></i>
+                        <span>Naval</span>
+                      </div>
+                      <div class="workload-bar-container">
+                        <div class="workload-bar">
+                          <div class="bar-fill naval" style="width: 70%"></div>
+                        </div>
+                        <span class="workload-value">21/30</span>
+                      </div>
+                    </div>
+                    
+                    <div class="workload-item">
+                      <div class="workload-label">
+                        <i class="bi bi-lightning-charge"></i>
+                        <span>Eléctrico</span>
+                      </div>
+                      <div class="workload-bar-container">
+                        <div class="workload-bar">
+                          <div class="bar-fill electrical" style="width: 60%"></div>
+                        </div>
+                        <span class="workload-value">12/20</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="workload-summary">
+                    <div class="summary-item">
+                      <span class="summary-label">Total Tareas</span>
+                      <span class="summary-value">75</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="summary-label">Capacidad</span>
+                      <span class="summary-value">97</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="summary-label">Utilización</span>
+                      <span class="summary-value">77%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Widget adicional - Métricas Rápidas -->
+              <div class="dashboard-widget quick-metrics">
+                <div class="widget-header">
+                  <h3>Métricas del Día</h3>
+                </div>
+                <div class="widget-content">
+                  <div class="metrics-grid">
+                    <div class="metric-item">
+                      <div class="metric-icon productivity">
+                        <i class="bi bi-graph-up-arrow"></i>
+                      </div>
+                      <div class="metric-details">
+                        <span class="metric-value">94%</span>
+                        <span class="metric-label">Productividad</span>
+                      </div>
+                    </div>
+                    
+                    <div class="metric-item">
+                      <div class="metric-icon quality">
+                        <i class="bi bi-shield-check"></i>
+                      </div>
+                      <div class="metric-details">
+                        <span class="metric-value">98%</span>
+                        <span class="metric-label">Calidad</span>
+                      </div>
+                    </div>
+                    
+                    <div class="metric-item">
+                      <div class="metric-icon safety">
+                        <i class="bi bi-heart-pulse"></i>
+                      </div>
+                      <div class="metric-details">
+                        <span class="metric-value">0</span>
+                        <span class="metric-label">Incidentes</span>
+                      </div>
+                    </div>
+                    
+                    <div class="metric-item">
+                      <div class="metric-icon efficiency">
+                        <i class="bi bi-speedometer2"></i>
+                      </div>
+                      <div class="metric-details">
+                        <span class="metric-value">89%</span>
+                        <span class="metric-label">Eficiencia</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Widget adicional - Personal Activo -->
+              <div class="dashboard-widget active-personnel">
+                <div class="widget-header">
+                  <h3>Personal Activo</h3>
+                  <div class="personnel-total">
+                    <span>89/95</span>
+                  </div>
+                </div>
+                <div class="widget-content">
+                  <div class="personnel-breakdown">
+                    <div class="personnel-item">
+                      <span class="department-name">Ingeniería</span>
+                      <div class="personnel-bar">
+                        <div class="bar-fill" style="width: 88%"></div>
+                      </div>
+                      <span class="personnel-count">23/26</span>
+                    </div>
+                    
+                    <div class="personnel-item">
+                      <span class="department-name">Obras Civiles</span>
+                      <div class="personnel-bar">
+                        <div class="bar-fill" style="width: 95%"></div>
+                      </div>
+                      <span class="personnel-count">19/20</span>
+                    </div>
+                    
+                    <div class="personnel-item">
+                      <span class="department-name">Naval</span>
+                      <div class="personnel-bar">
+                        <div class="bar-fill" style="width: 93%"></div>
+                      </div>
+                      <span class="personnel-count">28/30</span>
+                    </div>
+                    
+                    <div class="personnel-item">
+                      <span class="department-name">Eléctrico</span>
+                      <div class="personnel-bar">
+                        <div class="bar-fill" style="width: 95%"></div>
+                      </div>
+                      <span class="personnel-count">19/20</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Projects Section -->
+          <section id="projects" class="content-section">
+            <div class="section-header">
+              <h2>Gestión de Proyectos</h2>
+              <div class="breadcrumb">
+                <span class="breadcrumb-item">Dashboard</span>
+                <i class="bi bi-chevron-right"></i>
+                <span class="breadcrumb-item active">Proyectos</span>
+              </div>
+            </div>
+            <div class="content-body">
+              <div class="placeholder-content">
+                <div class="placeholder-icon">
+                  <i class="bi bi-kanban"></i>
+                </div>
+                <h3>Gestión de Proyectos</h3>
+                <p>Vista general de todos los proyectos activos, cronogramas y asignaciones por departamento.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Engineering Section -->
+          <section id="engineering" class="content-section">
+            <div class="section-header">
+              <div class="header-left">
+                <h2>Área de Ingeniería</h2>
+                <div class="department-info">
+                  <span class="department-lead">
+                    <i class="bi bi-person-badge"></i>
+                    Jefe de Área: Carlos Mendoza
+                  </span>
+                  <span class="department-status">
+                    <i class="bi bi-circle-fill text-success"></i>
+                    Operativo
+                  </span>
+                </div>
+              </div>
+              <div class="header-right">
+                <div class="breadcrumb">
+                  <span class="breadcrumb-item">Dashboard</span>
+                  <i class="bi bi-chevron-right"></i>
+                  <span class="breadcrumb-item active">Área de Ingeniería</span>
+                </div>
+                <div class="department-actions">
+                  <button class="btn-action" title="Exportar Reporte">
+                    <i class="bi bi-download"></i>
+                  </button>
+                  <button class="btn-action" title="Configurar Área">
+                    <i class="bi bi-gear"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Department Statistics -->
+            <div class="department-stats">
+              <div class="stat-card">
+                <div class="stat-icon engineering">
+                  <i class="bi bi-kanban"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">8</span>
+                  <span class="stat-label">Proyectos Activos</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon engineering">
+                  <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">23/27</span>
+                  <span class="stat-label">Personal Asignado</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon engineering">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">85%</span>
+                  <span class="stat-label">Eficiencia</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon engineering">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">3</span>
+                  <span class="stat-label">Hitos Esta Semana</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Department Navigation Tabs -->
+            <div class="department-tabs">
+              <div class="tab-nav">
+                <button class="tab-button active" data-tab="projects">
+                  <i class="bi bi-kanban"></i>
+                  Proyectos en Curso
+                </button>
+                <button class="tab-button" data-tab="gantt">
+                  <i class="bi bi-calendar3"></i>
+                  Carta Gantt
+                </button>
+                <button class="tab-button" data-tab="documentation">
+                  <i class="bi bi-folder2-open"></i>
+                  Documentación
+                </button>
+                <button class="tab-button" data-tab="team">
+                  <i class="bi bi-people"></i>
+                  Equipo de Trabajo
+                </button>
+              </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <!-- Projects Tab -->
+              <div id="projects-tab" class="tab-pane active">
+                <div class="projects-header">
+                  <div class="projects-filters">
+                    <select class="filter-select">
+                      <option value="all">Todos los Proyectos</option>
+                      <option value="on-time">A Tiempo</option>
+                      <option value="at-risk">En Riesgo</option>
+                      <option value="delayed">Atrasados</option>
+                    </select>
+                    <select class="filter-select">
+                      <option value="all">Todas las Prioridades</option>
+                      <option value="high">Alta Prioridad</option>
+                      <option value="medium">Media Prioridad</option>
+                      <option value="low">Baja Prioridad</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i>
+                    Nuevo Proyecto
+                  </button>
+                </div>
+
+                <div class="projects-container">
+                  <!-- Project Card 1 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Diseño Estructural Buque Tanquero TK-001</h3>
+                        <span class="project-code">ENG-2024-001</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge on-time">A Tiempo</span>
+                        <span class="priority-badge high">Alta</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Revisión Planos - 2 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Ing. María González</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">45 días</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Progreso General</span>
+                        <span class="progress-percentage">75%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Project Card 2 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Especificaciones Sistema Propulsión PQ-045</h3>
+                        <span class="project-code">ENG-2024-002</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge at-risk">En Riesgo</span>
+                        <span class="priority-badge medium">Media</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Entrega Especificaciones - 5 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Ing. Roberto Silva</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">6 días</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Progreso General</span>
+                        <span class="progress-percentage">60%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill warning" style="width: 60%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Project Card 3 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Análisis Estructural Dique Seco #2</h3>
+                        <span class="project-code">ENG-2024-003</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge delayed">Atrasado</span>
+                        <span class="priority-badge high">Alta</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Reporte Análisis - 1 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Ing. Ana Torres</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">2 días (Retrasado)</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Progreso General</span>
+                        <span class="progress-percentage">45%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill danger" style="width: 45%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gantt Chart Tab -->
+              <div id="gantt-tab" class="tab-pane">
+                <div class="gantt-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-calendar3"></i>
+                  </div>
+                  <h3>Carta Gantt - Área de Ingeniería</h3>
+                  <p>Vista temporal de todos los proyectos y sus dependencias</p>
+                  <button class="btn btn-primary">Cargar Carta Gantt</button>
+                </div>
+              </div>
+
+              <!-- Documentation Tab -->
+              <div id="documentation-tab" class="tab-pane">
+                <div class="docs-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-folder2-open"></i>
+                  </div>
+                  <h3>Documentación - Área de Ingeniería</h3>
+                  <p>Planos, especificaciones técnicas y manuales de procedimientos</p>
+                  <button class="btn btn-primary">Acceder a Documentos</button>
+                </div>
+              </div>
+
+              <!-- Team Tab -->
+              <div id="team-tab" class="tab-pane">
+                <div class="team-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <h3>Equipo de Trabajo - Área de Ingeniería</h3>
+                  <p>Personal asignado, roles y disponibilidad</p>
+                  <button class="btn btn-primary">Ver Equipo</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Civil Works Section -->
+          <section id="civil-works" class="content-section">
+            <div class="section-header">
+              <div class="header-left">
+                <h2>Área de Obras Civiles</h2>
+                <div class="department-info">
+                  <span class="department-lead">
+                    <i class="bi bi-person-badge"></i>
+                    Jefe de Área: Luis Rodriguez
+                  </span>
+                  <span class="department-status">
+                    <i class="bi bi-circle-fill text-success"></i>
+                    Operativo
+                  </span>
+                </div>
+              </div>
+              <div class="header-right">
+                <div class="breadcrumb">
+                  <span class="breadcrumb-item">Dashboard</span>
+                  <i class="bi bi-chevron-right"></i>
+                  <span class="breadcrumb-item active">Área de Obras Civiles</span>
+                </div>
+                <div class="department-actions">
+                  <button class="btn-action" title="Exportar Reporte">
+                    <i class="bi bi-download"></i>
+                  </button>
+                  <button class="btn-action" title="Configurar Área">
+                    <i class="bi bi-gear"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Department Statistics -->
+            <div class="department-stats">
+              <div class="stat-card">
+                <div class="stat-icon civil">
+                  <i class="bi bi-kanban"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">6</span>
+                  <span class="stat-label">Proyectos Activos</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon civil">
+                  <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">19/20</span>
+                  <span class="stat-label">Personal Asignado</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon civil">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">95%</span>
+                  <span class="stat-label">Eficiencia</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon civil">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">2</span>
+                  <span class="stat-label">Hitos Esta Semana</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Department Navigation Tabs -->
+            <div class="department-tabs">
+              <div class="tab-nav">
+                <button class="tab-button active" data-tab="projects">
+                  <i class="bi bi-kanban"></i>
+                  Proyectos en Curso
+                </button>
+                <button class="tab-button" data-tab="gantt">
+                  <i class="bi bi-calendar3"></i>
+                  Carta Gantt
+                </button>
+                <button class="tab-button" data-tab="documentation">
+                  <i class="bi bi-folder2-open"></i>
+                  Documentación
+                </button>
+                <button class="tab-button" data-tab="team">
+                  <i class="bi bi-people"></i>
+                  Equipo de Trabajo
+                </button>
+              </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <!-- Projects Tab -->
+              <div id="projects-tab" class="tab-pane active">
+                <div class="projects-header">
+                  <div class="projects-filters">
+                    <select class="filter-select">
+                      <option value="all">Todos los Proyectos</option>
+                      <option value="on-time">A Tiempo</option>
+                      <option value="at-risk">En Riesgo</option>
+                      <option value="delayed">Atrasados</option>
+                    </select>
+                    <select class="filter-select">
+                      <option value="all">Todas las Prioridades</option>
+                      <option value="high">Alta Prioridad</option>
+                      <option value="medium">Media Prioridad</option>
+                      <option value="low">Baja Prioridad</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i>
+                    Nuevo Proyecto
+                  </button>
+                </div>
+
+                <div class="projects-container">
+                  <!-- Project Card 1 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Cimentaciones Dique Seco #3</h3>
+                        <span class="project-code">CIV-2024-001</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge on-time">A Tiempo</span>
+                        <span class="priority-badge high">Alta</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Vaciado Concreto - 3 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Ing. Pedro Morales</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">4 días</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Progreso General</span>
+                        <span class="progress-percentage">80%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Project Card 2 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Construcción Muelle Auxiliar MA-02</h3>
+                        <span class="project-code">CIV-2024-002</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge at-risk">En Riesgo</span>
+                        <span class="priority-badge medium">Media</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Instalación Pilotes - 6 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Ing. Carmen López</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">7 días</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Progreso General</span>
+                        <span class="progress-percentage">55%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill warning" style="width: 55%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gantt Chart Tab -->
+              <div id="gantt-tab" class="tab-pane">
+                <div class="gantt-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-calendar3"></i>
+                  </div>
+                  <h3>Carta Gantt - Área de Obras Civiles</h3>
+                  <p>Vista temporal de todos los proyectos de construcción e infraestructura</p>
+                  <button class="btn btn-primary">Cargar Carta Gantt</button>
+                </div>
+              </div>
+
+              <!-- Documentation Tab -->
+              <div id="documentation-tab" class="tab-pane">
+                <div class="docs-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-folder2-open"></i>
+                  </div>
+                  <h3>Documentación - Área de Obras Civiles</h3>
+                  <p>Planos estructurales, especificaciones de construcción y normativas</p>
+                  <button class="btn btn-primary">Acceder a Documentos</button>
+                </div>
+              </div>
+
+              <!-- Team Tab -->
+              <div id="team-tab" class="tab-pane">
+                <div class="team-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <h3>Equipo de Trabajo - Área de Obras Civiles</h3>
+                  <p>Personal de construcción, supervisores y técnicos especializados</p>
+                  <button class="btn btn-primary">Ver Equipo</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Naval Section -->
+          <section id="naval" class="content-section">
+            <div class="section-header">
+              <div class="header-left">
+                <h2>Área Naval</h2>
+                <div class="department-info">
+                  <span class="department-lead">
+                    <i class="bi bi-person-badge"></i>
+                    Jefe de Área: Capitán José Martínez
+                  </span>
+                  <span class="department-status">
+                    <i class="bi bi-circle-fill text-success"></i>
+                    Operativo
+                  </span>
+                </div>
+              </div>
+              <div class="header-right">
+                <div class="breadcrumb">
+                  <span class="breadcrumb-item">Dashboard</span>
+                  <i class="bi bi-chevron-right"></i>
+                  <span class="breadcrumb-item active">Área Naval</span>
+                </div>
+                <div class="department-actions">
+                  <button class="btn-action" title="Exportar Reporte">
+                    <i class="bi bi-download"></i>
+                  </button>
+                  <button class="btn-action" title="Configurar Área">
+                    <i class="bi bi-gear"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Department Statistics -->
+            <div class="department-stats">
+              <div class="stat-card">
+                <div class="stat-icon naval">
+                  <i class="bi bi-kanban"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">5</span>
+                  <span class="stat-label">Embarcaciones en Construcción</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon naval">
+                  <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">21/30</span>
+                  <span class="stat-label">Personal Asignado</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon naval">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">70%</span>
+                  <span class="stat-label">Capacidad Utilizada</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon naval">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">4</span>
+                  <span class="stat-label">Entregas Programadas</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Department Navigation Tabs -->
+            <div class="department-tabs">
+              <div class="tab-nav">
+                <button class="tab-button active" data-tab="projects">
+                  <i class="bi bi-kanban"></i>
+                  Embarcaciones en Curso
+                </button>
+                <button class="tab-button" data-tab="gantt">
+                  <i class="bi bi-calendar3"></i>
+                  Cronograma Naval
+                </button>
+                <button class="tab-button" data-tab="documentation">
+                  <i class="bi bi-folder2-open"></i>
+                  Planos Navales
+                </button>
+                <button class="tab-button" data-tab="team">
+                  <i class="bi bi-people"></i>
+                  Tripulación
+                </button>
+              </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <!-- Projects Tab -->
+              <div id="projects-tab" class="tab-pane active">
+                <div class="projects-header">
+                  <div class="projects-filters">
+                    <select class="filter-select">
+                      <option value="all">Todas las Embarcaciones</option>
+                      <option value="on-time">A Tiempo</option>
+                      <option value="at-risk">En Riesgo</option>
+                      <option value="delayed">Atrasadas</option>
+                    </select>
+                    <select class="filter-select">
+                      <option value="all">Todos los Tipos</option>
+                      <option value="tanker">Buque Tanquero</option>
+                      <option value="fishing">Embarcación Pesquera</option>
+                      <option value="cargo">Buque de Carga</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i>
+                    Nueva Embarcación
+                  </button>
+                </div>
+
+                <div class="projects-container">
+                  <!-- Project Card 1 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Buque Tanquero "Aquamet Star"</h3>
+                        <span class="project-code">NAV-2024-001</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge on-time">A Tiempo</span>
+                        <span class="priority-badge high">Alta</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Soldadura Casco - 5 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Supervisor:</span>
+                        <span class="detail-value">Cap. Fernando Ruiz</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Entrega Estimada:</span>
+                        <span class="detail-value">15 Sep 2025</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Construcción Completada</span>
+                        <span class="progress-percentage">65%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Project Card 2 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Pesquero "Mar Azul"</h3>
+                        <span class="project-code">NAV-2024-002</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge at-risk">En Riesgo</span>
+                        <span class="priority-badge medium">Media</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Instalación Motor - 8 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Supervisor:</span>
+                        <span class="detail-value">Ing. Marina Castillo</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Entrega Estimada:</span>
+                        <span class="detail-value">30 Ago 2025</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Construcción Completada</span>
+                        <span class="progress-percentage">40%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill warning" style="width: 40%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gantt Chart Tab -->
+              <div id="gantt-tab" class="tab-pane">
+                <div class="gantt-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-calendar3"></i>
+                  </div>
+                  <h3>Cronograma Naval</h3>
+                  <p>Planificación temporal de construcción y entrega de embarcaciones</p>
+                  <button class="btn btn-primary">Cargar Cronograma</button>
+                </div>
+              </div>
+
+              <!-- Documentation Tab -->
+              <div id="documentation-tab" class="tab-pane">
+                <div class="docs-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-folder2-open"></i>
+                  </div>
+                  <h3>Planos Navales</h3>
+                  <p>Diseños de embarcaciones, especificaciones marítimas y certificaciones</p>
+                  <button class="btn btn-primary">Acceder a Planos</button>
+                </div>
+              </div>
+
+              <!-- Team Tab -->
+              <div id="team-tab" class="tab-pane">
+                <div class="team-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <h3>Tripulación Naval</h3>
+                  <p>Soldadores navales, carpinteros de ribera y especialistas marítimos</p>
+                  <button class="btn btn-primary">Ver Tripulación</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Electrical Section -->
+          <section id="electrical" class="content-section">
+            <div class="section-header">
+              <div class="header-left">
+                <h2>Área Eléctrica</h2>
+                <div class="department-info">
+                  <span class="department-lead">
+                    <i class="bi bi-person-badge"></i>
+                    Jefe de Área: Ing. Francisco Herrera
+                  </span>
+                  <span class="department-status">
+                    <i class="bi bi-circle-fill text-success"></i>
+                    Operativo
+                  </span>
+                </div>
+              </div>
+              <div class="header-right">
+                <div class="breadcrumb">
+                  <span class="breadcrumb-item">Dashboard</span>
+                  <i class="bi bi-chevron-right"></i>
+                  <span class="breadcrumb-item active">Área Eléctrica</span>
+                </div>
+                <div class="department-actions">
+                  <button class="btn-action" title="Exportar Reporte">
+                    <i class="bi bi-download"></i>
+                  </button>
+                  <button class="btn-action" title="Configurar Área">
+                    <i class="bi bi-gear"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Department Statistics -->
+            <div class="department-stats">
+              <div class="stat-card">
+                <div class="stat-icon electrical">
+                  <i class="bi bi-kanban"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">7</span>
+                  <span class="stat-label">Sistemas Activos</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon electrical">
+                  <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">12/20</span>
+                  <span class="stat-label">Técnicos Asignados</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon electrical">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">60%</span>
+                  <span class="stat-label">Capacidad Utilizada</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon electrical">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value">3</span>
+                  <span class="stat-label">Instalaciones Pendientes</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Department Navigation Tabs -->
+            <div class="department-tabs">
+              <div class="tab-nav">
+                <button class="tab-button active" data-tab="projects">
+                  <i class="bi bi-kanban"></i>
+                  Sistemas Eléctricos
+                </button>
+                <button class="tab-button" data-tab="gantt">
+                  <i class="bi bi-calendar3"></i>
+                  Cronograma de Instalaciones
+                </button>
+                <button class="tab-button" data-tab="documentation">
+                  <i class="bi bi-folder2-open"></i>
+                  Esquemas Eléctricos
+                </button>
+                <button class="tab-button" data-tab="team">
+                  <i class="bi bi-people"></i>
+                  Equipo Técnico
+                </button>
+              </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <!-- Projects Tab -->
+              <div id="projects-tab" class="tab-pane active">
+                <div class="projects-header">
+                  <div class="projects-filters">
+                    <select class="filter-select">
+                      <option value="all">Todos los Sistemas</option>
+                      <option value="on-time">A Tiempo</option>
+                      <option value="at-risk">En Riesgo</option>
+                      <option value="delayed">Atrasados</option>
+                    </select>
+                    <select class="filter-select">
+                      <option value="all">Todos los Tipos</option>
+                      <option value="power">Sistema de Potencia</option>
+                      <option value="control">Sistema de Control</option>
+                      <option value="navigation">Sistema de Navegación</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i>
+                    Nuevo Sistema
+                  </button>
+                </div>
+
+                <div class="projects-container">
+                  <!-- Project Card 1 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Sistema Eléctrico Principal TK-001</h3>
+                        <span class="project-code">ELE-2024-001</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge on-time">A Tiempo</span>
+                        <span class="priority-badge high">Alta</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Instalación Tableros - 4 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Tec. Miguel Vargas</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">5 días</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Instalación Completada</span>
+                        <span class="progress-percentage">85%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Project Card 2 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Sistema de Navegación Pesquero MA-02</h3>
+                        <span class="project-code">ELE-2024-002</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge delayed">Atrasado</span>
+                        <span class="priority-badge medium">Media</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Calibración GPS - 2 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Tec. Rosa Jiménez</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">3 días (Crítico)</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Instalación Completada</span>
+                        <span class="progress-percentage">30%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill danger" style="width: 30%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Project Card 3 -->
+                  <div class="project-card">
+                    <div class="project-header">
+                      <div class="project-title">
+                        <h3>Automatización Dique Seco #3</h3>
+                        <span class="project-code">ELE-2024-003</span>
+                      </div>
+                      <div class="project-status">
+                        <span class="status-badge at-risk">En Riesgo</span>
+                        <span class="priority-badge low">Baja</span>
+                      </div>
+                    </div>
+                    
+                    <div class="project-details">
+                      <div class="detail-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span class="detail-label">Próximo Hito:</span>
+                        <span class="detail-value">Programación PLC - 10 Ago 2025</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-person-check"></i>
+                        <span class="detail-label">Responsable:</span>
+                        <span class="detail-value">Ing. Carlos Mendoza</span>
+                      </div>
+                      <div class="detail-item">
+                        <i class="bi bi-clock"></i>
+                        <span class="detail-label">Tiempo Restante:</span>
+                        <span class="detail-value">11 días</span>
+                      </div>
+                    </div>
+
+                    <div class="project-progress">
+                      <div class="progress-header">
+                        <span class="progress-label">Instalación Completada</span>
+                        <span class="progress-percentage">50%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill warning" style="width: 50%"></div>
+                      </div>
+                    </div>
+
+                    <div class="project-actions">
+                      <button class="btn-action secondary">
+                        <i class="bi bi-eye"></i>
+                        Ver Detalles
+                      </button>
+                      <button class="btn-action primary">
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </button>
+                      <button class="btn-action">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gantt Chart Tab -->
+              <div id="gantt-tab" class="tab-pane">
+                <div class="gantt-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-calendar3"></i>
+                  </div>
+                  <h3>Cronograma de Instalaciones Eléctricas</h3>
+                  <p>Programación de instalaciones, pruebas y puestas en marcha</p>
+                  <button class="btn btn-primary">Cargar Cronograma</button>
+                </div>
+              </div>
+
+              <!-- Documentation Tab -->
+              <div id="documentation-tab" class="tab-pane">
+                <div class="docs-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-folder2-open"></i>
+                  </div>
+                  <h3>Esquemas Eléctricos</h3>
+                  <p>Diagramas unifilares, planos de instalación y manuales técnicos</p>
+                  <button class="btn btn-primary">Acceder a Esquemas</button>
+                </div>
+              </div>
+
+              <!-- Team Tab -->
+              <div id="team-tab" class="tab-pane">
+                <div class="team-placeholder">
+                  <div class="placeholder-icon">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <h3>Equipo Técnico Eléctrico</h3>
+                  <p>Electricistas, técnicos en automatización y especialistas en instrumentación</p>
+                  <button class="btn btn-primary">Ver Equipo</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Documents Section -->
+          <section id="documents" class="content-section">
+            <div class="section-header">
+              <h2>Repositorio de Documentos</h2>
+              <div class="breadcrumb">
+                <span class="breadcrumb-item">Dashboard</span>
+                <i class="bi bi-chevron-right"></i>
+                <span class="breadcrumb-item active">Documentos</span>
+              </div>
+            </div>
+            <div class="content-body">
+              <div class="placeholder-content">
+                <div class="placeholder-icon">
+                  <i class="bi bi-folder2-open"></i>
+                </div>
+                <h3>Repositorio de Documentos</h3>
+                <p>Gestión centralizada de planos, especificaciones, manuales y documentación técnica.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Settings Section -->
+          <section id="settings" class="content-section">
+            <div class="section-header">
+              <h2>Configuración del Sistema</h2>
+              <div class="breadcrumb">
+                <span class="breadcrumb-item">Dashboard</span>
+                <i class="bi bi-chevron-right"></i>
+                <span class="breadcrumb-item active">Configuración</span>
+              </div>
+            </div>
+            <div class="content-body">
+              <div class="placeholder-content">
+                <div class="placeholder-icon">
+                  <i class="bi bi-gear"></i>
+                </div>
+                <h3>Configuración del Sistema</h3>
+                <p>Ajustes de usuario, preferencias de la aplicación y configuración de notificaciones.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
